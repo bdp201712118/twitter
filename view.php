@@ -13,10 +13,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="js/jquery-3.2.1.js"></script>
-<script src="js/myScript.js"></script>
+<script src="js/test.js"></script>
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.js"></script>
-<script src="js/jquery.bxslider.js"></script>
+<!-- <script src="js/jquery.bxslider.js"></script> -->
 <style>
     * {box-sizing: border-box;}
 
@@ -351,35 +351,11 @@ body {
 
    <div class="width75">
 	    <center>
-        <section class="vertical-center-2 slider">
-    <div>
-      <img src="http://placehold.it/350x100?text=1">
-    </div>
-    <div>
-      <img src="http://placehold.it/350x100?text=2">
-    </div>
-    <div>
-      <img src="http://placehold.it/350x300?text=3">
-    </div>
-    <div>
-      <img src="http://placehold.it/350x300?text=4">
-    </div>
-    <div>
-      <img src="http://placehold.it/350x300?text=5">
-    </div>
-    <div>
-      <img src="http://placehold.it/350x300?text=6">
-    </div>
-    <div>
-      <img src="http://placehold.it/350x300?text=7">
-    </div>
-    <div>
-      <img src="http://placehold.it/350x300?text=8">
-    </div>
-    <div>
-      <img src="http://placehold.it/350x300?text=9">
-    </div>
-  </section>
+        <section class="vertical-center-2 slider tweetSlide">
+          <div>
+           
+          </div>
+        </section>
 			</center>
         </div> 
 

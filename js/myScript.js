@@ -21,12 +21,17 @@ $(document).ready(function() {
                 screen_name = results.screen_name;
                 for (i = 0; i < length; i++) {
                     if (i == 0) {
-                        list += '<div class="item active" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
+                        list += '<div>' + results.tweets[i].text + '</div><br>';
                     } else {
-                        list += '<div class="item" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
+                        list += '<div>' + results.tweets[i].text + '</div><br>';
                     }
 
                 }
+                // $('.slider').html(list);
+                // $('.slider').slick("slickNext");
+                $('.slider').slick("slickAdd",list);
+                $('.slider').slick("slickNext");
+                $('.slider').slick("slickRemove");
                 fetchFollowersInfo();
             }
         });
@@ -46,7 +51,7 @@ $(document).ready(function() {
                 for (i = 0; i < length; i++) {
                     var id = results.followers[i].screen_name;
                     var anchor = "<a class='followers-name' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + results.followers[i].name + "</a>";
-                    list += "<div class='col-md-12 follower'>" + "<img src='" + results.followers[i].propic + "' " + " style='border-radius:50%' />" + anchor + "</div>";
+                    list += "<div class='col-md-12 follower'>" + "<img src='" + results.followers[i].propic + "' " + "  />" + anchor + "</div>";
                 }
                 $('#followers').html(list);
             }
@@ -64,7 +69,7 @@ $(document).ready(function() {
                 if (pattern.test(name) == true) {
                     var id = followers_info[i].screen_name;
                     var anchor = "<a class='followers-name' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + name + "</a>";
-                    list += "<div class='col-md-12 follower'>" + "<img src='" + followers_info[i].propic + "' " + " style='border-radius:0%;' />" + anchor + "</div><br /><br />";
+                    list += "<div class='col-md-12 follower'>" + "<img src='" + followers_info[i].propic + "' " + " />" + anchor + "</div><br /><br />";
                 }
             }
         }

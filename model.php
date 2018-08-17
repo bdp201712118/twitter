@@ -36,7 +36,7 @@
             $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $request_token['oauth_token'], $request_token['oauth_token_secret']);
             $access_token = $connection->oauth("oauth/access_token", array("oauth_verifier" => $_REQUEST['oauth_verifier']));
             $_SESSION['access_token'] = $access_token;
-            header('Location: ../view/view.php');
+            header('Location: ./view.php');
         }
         /**
         * To get connection from access_token
