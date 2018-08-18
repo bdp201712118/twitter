@@ -1,6 +1,5 @@
 <?php
     require "./lib/twitteroauth/autoload.php";
-    require "./lib/Excelformat/PHPExcel.php";
     require "./lib/tcpdf/tcpdf.php";
     use Abraham\TwitterOAuth\TwitterOAuth;
     include('config.php');
@@ -255,6 +254,61 @@
             $tweets = $this->getUserAllTweets($user->screen_name);
             return $tweets;
         }
+
+        // upload spreedsheet to google drive
+        public function uploadGoogleDriveFollower($key) {
+            $connection = $this->getConnection();
+            $user = $this->getUser($connection);
+            $tweets = $this->getUserAllFollowers($key);
+            return $tweets;
+        }
+
+        public function getUserAllFollowers($key) {
+            $connection = $this->getConnection();
+            $next = -1;
+            $max = 0;
+            while( $next != 0 ) {
+                $friends = $connection->get("followers/list", ["screen_name"=>$key,"next_cursor"=>$next]);
+                $followers[] = $friends;
+                $next = $friends->next_cursor;
+                if($max==0)
+                    break;
+                $max++;
+            }
+            $cars = array("Volvo", "BMW", "Toyota");
+            $lists = [];
+            foreach( $followers as $val ) {
+                foreach( $val->users as $usr ) {
+                    $n = $usr->name;
+                    $lists[] = $n;
+				//	$pd .= '<h5>'.$n.'</h5><br>';
+                }
+             }
+            // if( count($tweets) == 1 ) {
+            //     $user_tweets[] = 'Soory, No Tweets Found';
+            //     return $user_tweets;
+            // }
+            // $totalTweets[] = $tweets;
+            // $page = 0;
+            // for ($count = 200; $count <= 3200; $count += 200) { 
+            //     $max = count($totalTweets[$page]) - 1;
+            //     $tweets = $connection->get("followers/list", ["screen_name"=>$key,"next_cursor"=>$next]);
+            //     if( count($tweets) == 1 ) {
+            //         break;
+            //     }
+            //     $totalTweets[] = $tweets;
+            //     $page += 1;
+            // }
+            // $start = 1;
+            // $index = 0;
+            // foreach ($totalTweets as $page) {
+            //     foreach ($page as $key) {
+            //         $user_tweets[$index++] = $key->text;
+            //         $start++;
+            //     }
+            // }
+            return $lists;
+        }
         
         public function downloadPublicUserFollowers($screen_name) {
 			//echo "<script type='text/javascript'>alert('$screen_name');</script>";
@@ -307,7 +361,6 @@
 			return $pd;
            
         }
-
 
         // logout
         public function logout() {

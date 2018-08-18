@@ -111,12 +111,16 @@ a{
     cursor: pointer;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
+  body{
+    background-color: lightblue;
+  }
 
   .topnav .search-container {
     float: none;
+    width: 100%;
   }
-  .topnav a, .topnav input[type=text], .topnav .search-container button {
+  .topnav a, .topnav input[type=text], .topnav .search-container {
     float: none;
     display: block;
     text-align: center;
@@ -124,11 +128,21 @@ a{
     margin: 0;
     padding: 14px;
   }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .search-container{
+    width: 100%;
+  }
+
   .topnav input[type=text] {
     border: 1px solid #ccc;  
   }
   .download {
     float: left;
+    width: 100%;
   }
   .row .width75 {
   width: 100%;

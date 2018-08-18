@@ -31,31 +31,33 @@
     }
 
     // download tweet
-    if( isset($_GET['download']) && $_GET['download']==true ) {
-        $type=$_GET['type'];
-        switch ($type) {
-            case "csv":
-                $model->downloadCSV();
-                break;
-            case "xls":
-                $model->downloadXLS();
-                break;
-            case "json":
-                $model->downloadJSON();
-                break;
-            case "google-spread-sheet":
-                $_SESSION['user-tweets'] = $model->uploadGoogleDrive();
-                header('location:lib\google-drive-api\index.php');
-                break;
+    if($_GET['download']==true ) {
+        $format=$_GET['format'];
+        if($format == "csv") {
+            $model->downloadCSV();
+        } else if($format =="json") {
+            $model->downloadJSON();
+        } else if($format == "google-spread-sheet") {
+            $_SESSION['user-tweets'] = $model->uploadGoogleDrive();
+            header('location:lib\google-drive-api\index.php');
         }
     }
        
+    // search public user
+    // if( isset($_POST['search_public_user']) ) {
+    //     $key = $_POST['key'];
+    //     $model->uploadGoogleDriveFollowerList($key);
+    //     header('location: view.php');
+    // }  
+
     if( isset($_POST['search_public_user']) ) {
         $key = $_POST['key'];
-        $model->downloadPublicUserFollowers($key);
-        header('location: view.php');
+        $_SESSION['user-tweets'] = $model->uploadGoogleDriveFollower($key);
+        header('location:lib\google-drive-api\index.php');
     }  
 
+
+    // autosearch
     if( isset($_GET['autosearch']) && $_GET['autosearch']==true ) {
         $model->searchfun();
     }

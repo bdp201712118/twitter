@@ -49,10 +49,11 @@ $(document).ready(function() {
                 length = (length >= 10) ? 10 : length;
                 for (i = 0; i < length; i++) {
                     var id = results.followers[i].screen_name;
-                    var anchor = "<a class='followers-name' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + results.followers[i].name + "</a>";
-                    list += "<div class='col-md-12 follower'>" + "<img src='" + results.followers[i].propic + "' " + "  />" + anchor + "</div>";
+                    var anchor = "<li><a class='followers-name' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + results.followers[i].name + "</a>";
+                    list += "<div class='col-md-12 follower'>" + "<img src='" + results.followers[i].propic + "' " + "  />" + anchor + "</div></li>";
                 }
-                $('#followers').html(list);
+                // $('#followers').html(list);
+                $('#followList').html(list);
             }
         });
     }
@@ -117,6 +118,21 @@ $(document).ready(function() {
         slidesToShow: 2,
         slidesToScroll: 2
       });
+
+      //filter followers as the user types in the search box
+    $('#filter').on("keyup", function () {
+        var filter = $(this).val();
+        $("#followList").each(function () {
+            if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                $(this).slideUp();
+            } else {
+                $(this).slideDown();
+                $(this).removeAttr("style");
+                $(this).keyup();
+            }
+        });
+        
+    });
  
     fetchUserInfo();
 });

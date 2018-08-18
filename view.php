@@ -3,7 +3,7 @@
 <head>
 <title>Twitter Timeline challenge</title>
 <link rel="icon" type="image/png" href="images/twitter.png"/>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css" type="text/css"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -14,10 +14,13 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="js/jquery-3.2.1.js"></script>
 <script src="js/myScript.js"></script>
-
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.js"></script>
 <link rel="stylesheet" href="css/myView.css">
+
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
 
@@ -27,10 +30,8 @@
   <a href="controller.php?logout=true" class="logout">LogOut &nbsp<i class="fas fa-sign-out-alt"></i></a>
   <div class="search-container" style="float:left;">
     <form method="post" action="controller.php">
-      <!-- <input type="text" placeholder="Search.." name="search"> -->
-      <input type="text" class="search_follower search-box" placeholder="Download Follower" name="key" id="search-box"  />
-      <span class="searchMessage" style="display: none;">Wait few seconds....</span>
-      <button type="submit" id="downloadFollower" name="search_public_user" class="download"><i class="fas fa-file-download"></i></button> 
+      <input type="text" class="search_follower search-box" placeholder="Download Follower" name="key" id="search-box" style="display: inline-block;" />
+      <button type="submit" id="downloadFollower" name="search_public_user" class="download" style="display: inline-block;"><i class="fas fa-file-download"></i></button> 
       <!-- <div id="search1"></div> -->
     </form>
   </div>
@@ -74,6 +75,8 @@
 
 </div>
 
+
+
 <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
@@ -82,10 +85,10 @@
     <div class="dropdown">
       <button class="dropbtn">Select format</button>
       <div class="dropdown-content">
-        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&type=google-spread-sheet">Google SpreadSheet</a>
-        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&type=json">Json</a>
-        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&type=csv">CSV</a>
-        <!-- <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&type=xls">XLS</a> -->
+        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&format=google-spread-sheet">Google SpreadSheet</a>
+        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&format=json">Json</a>
+        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&format=csv">CSV</a>
+        <!-- <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&format=xls">XLS</a> -->
       </div>
     </div>
   </div>
