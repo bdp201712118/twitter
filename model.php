@@ -275,7 +275,6 @@
                     break;
                 $max++;
             }
-            $cars = array("Volvo", "BMW", "Toyota");
             $lists = [];
             foreach( $followers as $val ) {
                 foreach( $val->users as $usr ) {
