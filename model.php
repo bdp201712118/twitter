@@ -1,18 +1,14 @@
 <?php
-     require "./lib/twitteroauth/autoload.php";
-    // require "./lib/PHPExcel/PHPExcel.php";
-    // require './lib/FPDF/fpdf.php';
+    require "./lib/twitteroauth/autoload.php";
+    require "./lib/Excelformat/PHPExcel.php";
+    require "./lib/tcpdf/tcpdf.php";
     use Abraham\TwitterOAuth\TwitterOAuth;
-    define('CONSUMER_KEY', 'X0CQlGfqCkoCs6U5KOBxTfiap');
-    define('CONSUMER_SECRET', 'AFgPgV4dPbGkKcxQaKIsCjvhrHETJHQsPZ31szNT7B9JvlWumr');
-    define('OAUTH_CALLBACK', 'http://twitter.alampatawebsolution.a2hosted.com/callback.php');
+    include('config.php');
     
     class Model {
-        /*
-        * Handle Twitter Connect
-        *
-        */
-        public function twitter_connect() {
+        
+        // connect using twitter
+        public function connection() {
             if (!isset($_SESSION['access_token'])) {
                 $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
                 $request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => OAUTH_CALLBACK));
@@ -25,10 +21,8 @@
                 header('Location: ./view.php');
             }
         }
-        /**
-        * Handle Callback Functionality
-        *
-        */
+    
+        // redirect user back to index page
         public function callback(){
             $request_token = [];
             $request_token['oauth_token'] = $_REQUEST['oauth_token'];
@@ -38,28 +32,81 @@
             $_SESSION['access_token'] = $access_token;
             header('Location: ./view.php');
         }
-        /**
-        * To get connection from access_token
-        * @return Connection Object
-        */
+
+        // To get connection from access_token
         public function getConnection() {
             $access_token = $_SESSION['access_token'];
             $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
             return $connection;
         }
-        /**
-        * To Fetch Current User Object
-        * @return user object of the currently login
-        */
+
+        // get current logged in user
         public function getUser($connection) {
             $user = $connection->get("account/verify_credentials");
             return $user;
         }
-        /**
-        * To Fetch most recent 10 tweets of the users
-        * @param = @screen_name = its screen_name of the user
-        * @return 10 tweets of the user
-        */
+
+
+        public function searchfun() {
+            $connection = $this->getConnection();
+            if (isset($_GET['term'])) {
+                if (!isset($_SESSION['data'])) {
+                    //include_once "getfollowerslist_ajax.php";
+                    $connection = $this->getConnection();
+                    $myprofile_value = $_SESSION['my_profile'];
+                    $my_scrren_name = $myprofile_value['screen_name'];
+                    $followerslist = $connection->get("followers/ids", array('screen_name' => $my_scrren_name, 'count' => 5000));
+                    $cnt = 0;
+                    $var_assign = 0;
+                    $loop_cnt = '';
+                    foreach ($followerslist->ids as $followr_id) {
+                        if ($cnt % 100 == 0) {
+                            $var_assign = $var_assign + 1;
+                            $loop_cnt = $var_assign;
+                            ${"var$var_assign"} = '';
+                        }
+                        ${"var$var_assign"} = ${"var$var_assign"} . "," . $followr_id;    
+						
+                        $cnt = $cnt + 1;
+                    }
+                    $response_array = array();
+                    $new = 1;
+                    for ($i = 1; $i <= $loop_cnt; $i++) {
+                        $id_lookup = $connection->get("users/lookup", array('user_id' => ${"var$i"}));
+                        foreach ($id_lookup as $key => $value) {
+                            $response_array[$new]['id'] = $value->id;
+                            $response_array[$new]['name'] = $value->screen_name;
+                            $new = $new + 1;
+                        }
+                    }
+                    $_SESSION['data'] = $response_array;
+                }
+                $keyword = $_GET['term'];
+                $my_search = array();
+                $my_search = $_SESSION['data'];
+                $public_user = array();
+                for ($i = 1; $i <= 3; $i++) {
+                    $followerslist = $connection->get("users/search", array('q' => $keyword, 'count' => 20, 'page' => $i));
+                    foreach ($followerslist as $key => $value) {
+                        $public_user[] = $value->screen_name;
+                    }
+                }
+                $follower_session = $my_search;
+                $followername_array = array();
+                foreach ($follower_session as $key => $follw_value) {
+                    $followername_array[$key] = $follw_value['name'];
+                }
+                $input = preg_quote($keyword, '~');
+                $result1 = preg_grep('~' . $input . '~', $followername_array);
+                $final_result = array_merge($result1, $public_user);
+                if (empty($final_result)) {
+                    $final_result = array("No user found");
+                }
+                echo json_encode($final_result);
+            }
+        }
+
+        // get 10 tweet of user
         public function getUserTweets($screen_name) {
             $connection = $this->getConnection();
             $tweets = $connection->get("statuses/user_timeline",["count" => 10, "exclude_replies" => true,"screen_name" => $screen_name]);
@@ -74,11 +121,8 @@
                 );
             return $t;
         }
-        /**
-        * To Fetch all tweets of the users
-        * @param = @screen_name = its screen_name of the user
-        * @return all tweets of the user
-        */
+
+        // get tweet of logged in user
         public function getUserAllTweets($screen_name) {
             $connection = $this->getConnection();
             $tweets = $connection->get("statuses/user_timeline",["count" => 200, "exclude_replies" => true,"include_rts"=>true,"screen_name" => $screen_name]);
@@ -107,11 +151,8 @@
             }
             return $user_tweets;
         }
-        /**
-        * To Fetch all followers of the users
-        * @param = @screen_name = its screen_name of the user
-        * @return all followers of the user
-        */
+
+        // get follower of logged in user
         public function getFollowers($screen_name) {
             $connection = $this->getConnection();
             $next = -1;
@@ -138,11 +179,9 @@
             );
             echo json_encode($json);
         }
-        /**
-        * To Fetch followers information
-        * @param = @id = its screen_name of the user
-        */
-        public function getFollowerInfo($id) {
+
+        // to get detail of user
+        public function getFollowerDetail($id) {
             $connection = $this->getConnection();
             $user = $connection->get("users/show",['screen_name'=>$id]);
             $name = $user->name;
@@ -157,10 +196,9 @@
             $json = json_encode($res);
             echo $json;
         }
-        /**
-        * To Fetch login user information
-        */
-        public function getUserData() {
+
+        // to get detail of logged in user
+        public function getLoggedInUserDetail() {
             $connection = $this->getConnection();
             $user = $this->getUser($connection);
             $tweets = $this->getUserTweets($user->screen_name);
@@ -176,9 +214,7 @@
             echo $json;
         }
         
-		/**
-        * Fetch loginuser tweets and download all tweets in csv
-        */
+		// download tweet in csv format
         public function downloadCSV() {
             $connection = $this->getConnection();
             $user = $this->getUser($connection);
@@ -195,101 +231,8 @@
                 }
             }
         }
-		
-		/**
-        * Fetch loginuser tweets and download all tweets in pdf
-        */
-		public function downloadpdf(){
-		
-		    session_start();
-			$arrayValue = $_SESSION['my'];
-			$tweetValue = "";
-			foreach ($arrayValue as $key => $value) {
-				$result = preg_replace("/[^a-zA-Z0-9 # @ $ ( ) &  ? _: . \/ ]+/", " ", html_entity_decode($value[1], ENT_QUOTES));
-				$tweetValue .= $key + 1 . "." . $result . "\n \n";
-			}
-			echo $tweetValue;
-		
-		}
-		
-		/**
-        * Fetch loginuser tweets and download all tweets in xml
-        */
-		
-		public function downloadxml(){
-			ob_start();
-			session_start();
-			$menu = $_SESSION['my'];
-			$xml = new SimpleXMLElement('<xml/>');
-			foreach ($menu as $key => $value) {
-				$track = $xml->addChild('root');
-				$track->addChild('number', $key + 1);
-				$track->addChild('tweet', $value[1]);
-				if ($key == 24) {
-					break;
-				}
-			}
-			print($xml->asXML());
-			$filename = "my_tweets_" . date('Ymdhis') . ".xml";
-			header("Content-Disposition: attachment; filename=\"$filename\"");
-			Header('Content-type: text/xml');
-			ob_end_flush();
-		}
-        /**
-        * Fetch loginuser tweets and download all tweets ub XLS
-        */
-        public function downloadXLS() {
-            /*$connection = $this->getConnection();
-            $user = $this->getUser($connection);
-            $tweets[] = $this->getUserAllTweets($user->screen_name);
-            $excel = new PHPExcel();
-            $count = count($tweets);
-            $row = 1;
-            $col = 1;
-            for($i=0;$i<$count;$i++) {
-                $c = count($tweets[$i]);
-                for($j=0;$j<$c;$j++) {
-                    $excel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $tweets[$i][$j]);
-                    $row++;
-                }
-            }
-            header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            header("Content-Disposition: attachment;filename=tweets.xlsx");
-            header("Cache-Control: max-age=0");
-            $file = PHPExcel_IOFactory::createWriter($excel,'Excel2007');
-            $file->save("php://output");*/
-			
-			
-			session_start();
-$menu = $_SESSION['my'];
-$data = array();
-foreach ($menu as $key => $value) {
-    $data[$key]['number'] = $key + 1;
-    $result = preg_replace("/[^a-zA-Z0-9 # @ $ ( ) &  ? _: . \/ ]+/", " ", html_entity_decode($value[1], ENT_QUOTES));
-    $data[$key]['tweet'] = str_replace(',', ' ', $result);
-}
-function cleanData(&$str)
-{
-    $str = preg_replace("/\t/", "\\t", $str);
-    $str = preg_replace("/\r?\n/", "\\n", $str);
-    if (strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
-}
-$filename = "my_tweets_" . date('Ymdhis') . ".xls";
-header("Content-Disposition: attachment; filename=\"$filename\"");
-header("Content-Type: application/vnd.ms-excel");
-$flag = false;
-foreach ($data as $row) {
-    if (!$flag) {
-        echo implode("\t", array_keys($row)) . "\r\n";
-        $flag = true;
-    }
-    array_walk($row, __NAMESPACE__ . '\cleanData');
-    echo implode("\t", array_values($row)) . "\r\n";
-}
-        }
-        /**
-        * Fetch loginuser tweets and download all tweets ub JSON
-        */
+
+        // download tweet in json format
         public function downloadJSON() {
             $connection = $this->getConnection();
             $user = $this->getUser($connection);
@@ -304,35 +247,69 @@ foreach ($data as $row) {
             $arr = json_encode($arr);
             print_r($arr);
         }
-        /**
-        * Fetch loginuser tweets and save in user google drive
-        */
+       
+        // upload spreedsheet to google drive
         public function uploadGoogleDrive() {
             $connection = $this->getConnection();
             $user = $this->getUser($connection);
             $tweets = $this->getUserAllTweets($user->screen_name);
             return $tweets;
         }
-        /**
-        * Fetch public user tweets and download in pdf
-        */
-        public function downloadPublicUserTweets($screen_name) {
-            $tweets = $this->getUserAllTweets($screen_name);
-            $pdf = new FPDF();
-            $pdf->AliasNbPages();
-            $pdf->SetFont('Times','',12);
-            $pdf->AddPage();
-            $index = 1;
-            foreach($tweets as $text) {
-                $pdf->MultiCell(0,10,$index. ' ' . $text,0,5);
-                $index++;
-            }
-            $pdf->Output('D',$screen_name.'.pdf');
+        
+        public function downloadPublicUserFollowers($screen_name) {
+			//echo "<script type='text/javascript'>alert('$screen_name');</script>";
+            $tweets = $this->getFollowersuser($screen_name);
+			
+            $obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);  
+            $obj_pdf->SetCreator(PDF_CREATOR);  
+			$obj_pdf->SetTitle("Follower List");  
+            $obj_pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);  
+			$obj_pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));  
+			$obj_pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
+			$obj_pdf->SetDefaultMonospacedFont('helvetica');  
+			$obj_pdf->SetFooterMargin(PDF_MARGIN_FOOTER);  
+			$obj_pdf->SetMargins(PDF_MARGIN_LEFT, '5', PDF_MARGIN_RIGHT);  
+			$obj_pdf->setPrintHeader(false);  
+			$obj_pdf->setPrintFooter(false);  
+			$obj_pdf->SetAutoPageBreak(TRUE, 10);  
+			$obj_pdf->SetFont('helvetica', '', 12);  
+			$obj_pdf->AddPage();  
+			$obj_pdf->writeHTML($tweets);  
+
+            $obj_pdf->Output('follower.pdf', 'D');  //save pdf
+              //$obj_pdf->Output('file.pdf', 'I'); // show pdf
+
+			  	
         }
-        /**
-        * Handle logout functionality
-        *
-        */
+		
+		public function getFollowersuser($screen_name) {
+            $connection = $this->getConnection();
+            $next = -1;
+            $max = 0;
+            while( $next != 0 ) {
+                $friends = $connection->get("followers/list", ["screen_name"=>$screen_name,"next_cursor"=>$next]);
+                $followers[] = $friends;
+                $next = $friends->next_cursor;
+                if($max==0)
+                    break;
+                $max++;
+            }
+         
+			
+			$pd = '<center><h2> RTcamp twitter timeline challenge </h2></center><br><h4>'. $screen_name .'\'s&nbsp;follower list</h4> <hr>';
+			foreach( $followers as $val ) {
+                foreach( $val->users as $usr ) {
+                    $n = $usr->name;
+					$pd .= '<h5>'.$n.'</h5><br>';
+                }
+            }
+            
+			return $pd;
+           
+        }
+
+
+        // logout
         public function logout() {
             session_unset();
             session_destroy();

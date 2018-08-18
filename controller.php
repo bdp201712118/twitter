@@ -2,33 +2,35 @@
     session_start();
     require './model.php';
     $model = new Model();
-    // Login With Twitter
+    
+    // login
     if( isset($_POST['login']) ) {
-        $model->twitter_connect();
+        $model->connection();
     }
-    // CallBack
+
+    // redirect user back to index page
     if ( isset($_REQUEST['oauth_verifier'], $_REQUEST['oauth_token']) ) {
         $model->callback();
     }
-    //GetSelected User Profile
+
+    // get follower detail
     if(isset($_GET['followers']) ) {
         $id = $_GET['usr_id'];
-        $model->getFollowerInfo($id);
+        $model->getFollowerDetail($id);
     }
-    // Download Public User Tweets
-    if( isset($_POST['search_public_user']) ) {
-        $key = $_POST['key'];
-        $model->downloadPublicUserTweets($key);
-        header('location: ./view.php');
-    }
+
+    // get detail of user
     if( isset($_GET['fetchFollowers']) ) {
         $screen_name = $_GET['fetchFollowers'];
         $model->getFollowers($screen_name);
     }
+
+    // get detail of logged in user
     if( isset($_GET['userdata']) && $_GET['userdata']==true ) {
-        $model->getUserData();
+        $model->getLoggedInUserDetail();
     }
-    // Download
+
+    // download tweet
     if( isset($_GET['download']) && $_GET['download']==true ) {
         $type=$_GET['type'];
         switch ($type) {
@@ -43,18 +45,22 @@
                 break;
             case "google-spread-sheet":
                 $_SESSION['user-tweets'] = $model->uploadGoogleDrive();
-                header('location:lib\google-drive-api/index.php');
-                break;
-			case "xml":
-                $model->downloadxml();
-                break;
-			case "pdf":
-                $model->downloadpdf();
+                header('location:lib\google-drive-api\index.php');
                 break;
         }
     }
-        
-    // Logout
+       
+    if( isset($_POST['search_public_user']) ) {
+        $key = $_POST['key'];
+        $model->downloadPublicUserFollowers($key);
+        header('location: view.php');
+    }  
+
+    if( isset($_GET['autosearch']) && $_GET['autosearch']==true ) {
+        $model->searchfun();
+    }
+
+    // logout
     if( isset($_GET['logout']) && $_GET['logout']==true ) {
         $model->logout();
     }

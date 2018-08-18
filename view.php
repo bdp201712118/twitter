@@ -3,9 +3,9 @@
 <head>
 <title>Twitter Timeline challenge</title>
 <link rel="icon" type="image/png" href="images/twitter.png"/>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css" type="text/css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
-<link rel="stylesheet" href="css/myStyle.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="./slick/slick.css">
 <link rel="stylesheet" type="text/css" href="./slick/slick-theme.css">
@@ -13,26 +13,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 <script src="js/jquery-3.2.1.js"></script>
-<script src="js/test.js"></script>
+<script src="js/myScript.js"></script>
+
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.js"></script>
+<link rel="stylesheet" href="css/myView.css">
 </head>
 <body>
 
 <div class="topnav">
   <a class="active" href="#home"><i class="fab fa-twitter"></i></a>
-  <!-- <a href="#" id="download" class="download">Download Tweet&nbsp<i class="fas fa-file-download"></i></a> -->
   <a href="#" id="download" class="download">Download Tweet&nbsp<i class="fas fa-file-download"></i></a>
-  <a href="#" id="downloadFollower" class="download">Download Follower&nbsp<i class="fas fa-file-download"></i></a>
   <a href="controller.php?logout=true" class="logout">LogOut &nbsp<i class="fas fa-sign-out-alt"></i></a>
   <div class="search-container" style="float:left;">
-    <form>
+    <form method="post" action="controller.php">
       <!-- <input type="text" placeholder="Search.." name="search"> -->
-      <input type="text" class="search_follower" placeholder="Download Follower" id="searchbox1" autocomplete="off" />
-      <div id="search1"></div>
+      <input type="text" class="search_follower search-box" placeholder="Download Follower" name="key" id="search-box"  />
+      <span class="searchMessage" style="display: none;">Wait few seconds....</span>
+      <button type="submit" id="downloadFollower" name="search_public_user" class="download"><i class="fas fa-file-download"></i></button> 
+      <!-- <div id="search1"></div> -->
     </form>
   </div>
-                 
+           
 </div>
 
 <div class="row">
@@ -64,7 +66,7 @@
 	    <center>
         <section class="vertical-center-2 slider tweetSlide">
           <div>
-           
+       
           </div>
         </section>
 			</center>
@@ -80,19 +82,18 @@
     <div class="dropdown">
       <button class="dropbtn">Select format</button>
       <div class="dropdown-content">
-        <a role="menuitem" tabindex="-1" class="download" data-value='google-spreadhseet' href="./controller.php?download=true&type=google-spread-sheet">Google SpreadSheet</a>
-        <a role="menuitem" tabindex="-1" class="download" data-value='xml'  href="./controller.php?download=true&type=xml">XML</a>
-        <a role="menuitem" tabindex="-1" class="download" data-value='json'  href="./controller.php?download=true&type=json">Json</a>
-        <a role="menuitem" tabindex="-1" class="download" data-value='xls'  href="./controller.php?download=true&type=xls">XLS</a>
-        <a role="menuitem" tabindex="-1" class="download" data-value='csv'  href="./controller.php?download=true&type=csv">CSV</a>
+        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&type=google-spread-sheet">Google SpreadSheet</a>
+        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&type=json">Json</a>
+        <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&type=csv">CSV</a>
+        <!-- <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&type=xls">XLS</a> -->
       </div>
     </div>
   </div>
 </div>
 
-<div id="myModalFollower" class="modal">
+<!-- <div id="myModalFollower" class="modal"> -->
   <!-- Modal content -->
-  <div class="modal-content">
+  <!-- <div class="modal-content">
     <span class="close">&times;</span>
     <h3>Download Followers</h3><hr>
     <div class="dropdown">
@@ -106,7 +107,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
   <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
   <script src="./slick/slick.min.js" type="text/javascript" charset="utf-8"></script>
@@ -122,13 +123,13 @@
         document.getElementById("myModal").style.display = "none";
     }
     // open the download  modal 
-     document.getElementById("downloadFollower").onclick = function() {
-        document.getElementById("myModalFollower").style.display = "block";
-    }
-    // close the download tweet modal
-    document.getElementsByClassName("closeFollower")[0].onclick = function() {
-        document.getElementById("myModalFollower").style.display = "none";
-    }
+    //  document.getElementById("downloadFollower").onclick = function() {
+    //     document.getElementById("myModalFollower").style.display = "block";
+    // }
+    // // close the download tweet modal
+    // document.getElementsByClassName("closeFollower")[0].onclick = function() {
+    //     document.getElementById("myModalFollower").style.display = "none";
+    // }
     // to anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == document.getElementById("myModal")) {
@@ -136,4 +137,6 @@
         }
     }
 </script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
+<script src="js/auto.js"></script>
 </html>

@@ -83,6 +83,6 @@ function insertFile($service, $title, $description, $mimeType)
     }
 }
 $drive_link=$driveInfo["alternateLink"];
-header('location: ../../home.php?google-sheet-save=true');
+header('location: ../../view.php?google-sheet-save=true');
 
 ?>

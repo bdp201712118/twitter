@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var followers_info = "";
     var screen_name = "";
-
+    var c= 0;
     function fetchUserInfo() {
         $.ajax({
             url: './controller.php?userdata=true',
@@ -20,6 +20,7 @@ $(document).ready(function() {
                 length = (length >= 10) ? 10 : length;
                 screen_name = results.screen_name;
                 for (i = 0; i < length; i++) {
+                    c = c+1;
                     if (i == 0) {
                         list += '<div>' + results.tweets[i].text + '</div><br>';
                     } else {
@@ -27,8 +28,6 @@ $(document).ready(function() {
                     }
 
                 }
-                // $('.slider').html(list);
-                // $('.slider').slick("slickNext");
                 $('.slider').slick("slickAdd",list);
                 $('.slider').slick("slickNext");
                 $('.slider').slick("slickRemove");
@@ -57,6 +56,42 @@ $(document).ready(function() {
             }
         });
     }
+
+    $(document.body).on('click', '.followers-name', function() {
+        var id = $(this).attr('data-value');
+        $.ajax({
+            url: './controller.php?followers=true&usr_id=' + id,
+            dataType: 'json',
+            type: 'GET',
+            success: function(results) {
+                // var s = $('.slider').slideCount;
+                // for( i = 0; i<c ; i++ ) {
+                //     $('.slider').slick('slickRemove', i);
+                // }
+                // $('.slider').slick('slickRemoveAll');
+                $('.slider').slick('destroy');
+                var cm= " <center><section class='vertical-center-2 slider tweetSlide'><div></div></section></center>";
+                $('#ak').html(cm);
+                var name = results.name;
+                var list = '';
+               
+                var length = results.tweets.length;
+                length = (length >= 10) ? 10 : length;
+                for (i = 0; i < length; i++) {
+                
+                    if (i == 0) {
+                        list += '<div><b>' + results.tweets[i].text + '</b></div><br>';
+                    } else {
+                        list += '<div><b>' + results.tweets[i].text + '</b></div><br>';
+                    }
+                }
+                // $('#myp').html(list);
+                // $('.slider').slick("slickAdd",list);
+                $('.slider').slick("slickNext");
+                $('.slider').slick("slickRemove");
+            }
+        });
+    });
 
     $(document).on('input', '#searchbox', function() {
         var data = $(this).val();

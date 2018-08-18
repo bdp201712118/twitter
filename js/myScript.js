@@ -57,7 +57,37 @@ $(document).ready(function() {
             }
         });
     }
-
+    $(document.body).on('click', '.followers-name', function() {
+        alert("hello");
+        var id = $(this).attr('data-value');
+        $.ajax({
+            url: './controller.php?followers=true&usr_id=' + id,
+            dataType: 'json',
+            type: 'GET',
+            success: function(results) {
+                
+                $('.slider').html("");
+                var name = results.name;
+                $("#name_user_mid").text(name);
+                $("#user_pic_mid").attr('src', results.propic);
+                var list = '';
+                var length = results.tweets.length;
+                length = (length >= 10) ? 10 : length;
+                for (i = 0; i < length; i++) {
+                    if (i == 0) {
+                        list += '<div>' + results.tweets[i].text + '</div><br>';
+                    } else {
+                        list += '<div>' + results.tweets[i].text + '</div><br>';
+                    }
+                }
+                list = (length == 0) ? '<br />' : list;
+                $('.slider').slick("slickAdd",list);
+                $('.slider').slick("slickNext");
+                $('.slider').slick("slickRemove");
+                fetchFollowersInfo();
+            }
+        });
+    });
     $(document).on('input', '#searchbox', function() {
         var data = $(this).val();
         var list = '';
@@ -82,6 +112,8 @@ $(document).ready(function() {
         slidesToShow: 2,
         slidesToScroll: 2
       });
+
+     
  
     fetchUserInfo();
 });
