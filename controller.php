@@ -38,7 +38,7 @@
         } else if($format =="json") {
             $model->downloadJSON();
         } else if($format == "google-spread-sheet") {
-            $_SESSION['user-tweets'] = $model->uploadGoogleDrive();
+            $_SESSION['downloadFormat'] = $model->uploadGoogleDrive();
             header('location:lib\google-drive-api\index.php');
         }
     }
@@ -50,10 +50,17 @@
     //     header('location: view.php');
     // }  
 
+    // google drive
+    // if( isset($_POST['search_public_user']) ) {
+    //     $key = $_POST['key'];
+    //     $_SESSION['downloadFormat'] = $model->uploadGoogleDriveFollower($key);
+    //     header('location:lib\google-drive-api\index.php');
+    // }  
+
+    // xml formate
     if( isset($_POST['search_public_user']) ) {
         $key = $_POST['key'];
-        $_SESSION['user-tweets'] = $model->uploadGoogleDriveFollower($key);
-        header('location:lib\google-drive-api\index.php');
+         $model->dowloadXML($key);;
     }  
 
 

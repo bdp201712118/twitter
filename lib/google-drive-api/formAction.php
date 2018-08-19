@@ -59,7 +59,7 @@ function insertFile($service, $title, $description, $mimeType)
         // Get the contents of the file uploaded
         $data = fopen('my_tweets.xlsx', 'w');
 
-        $tweets = $_SESSION['user-tweets'];
+        $tweets = $_SESSION['downloadFormat'];
         $header = array("text");
         fputcsv($data,$header,"\t");
         foreach ($tweets as $tweet) {
@@ -79,7 +79,7 @@ function insertFile($service, $title, $description, $mimeType)
         // Return a bunch of data including the link to the file we just uploaded
         return $createdFile;
     } catch (Exception $e) {
-        print "An error occurred: " . $e->getMessage();
+        // print "An error occurred: " . $e->getMessage();
     }
 }
 $drive_link=$driveInfo["alternateLink"];

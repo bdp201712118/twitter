@@ -255,12 +255,27 @@
             return $tweets;
         }
 
+        // download follower in xml format
+        public function dowloadXML($key) {
+            $val="follower";
+            $connection = $this->getConnection();
+            $user = $this->getUser($connection);
+            $followerslistX = $this->getUserAllFollowers($key);
+            header("Content-type: text/xml");
+            header("Content-Disposition: attachment; filename=follower.xml");
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            foreach($followerslistX as $aa) {
+                echo "<". $val .">". $aa ."</". $val .">";
+            }
+        }
+
         // upload spreedsheet to google drive
         public function uploadGoogleDriveFollower($key) {
             $connection = $this->getConnection();
             $user = $this->getUser($connection);
-            $tweets = $this->getUserAllFollowers($key);
-            return $tweets;
+            $followerslistD = $this->getUserAllFollowers($key);
+            return $followerslistD;
         }
 
         public function getUserAllFollowers($key) {
@@ -280,32 +295,8 @@
                 foreach( $val->users as $usr ) {
                     $n = $usr->name;
                     $lists[] = $n;
-				//	$pd .= '<h5>'.$n.'</h5><br>';
                 }
              }
-            // if( count($tweets) == 1 ) {
-            //     $user_tweets[] = 'Soory, No Tweets Found';
-            //     return $user_tweets;
-            // }
-            // $totalTweets[] = $tweets;
-            // $page = 0;
-            // for ($count = 200; $count <= 3200; $count += 200) { 
-            //     $max = count($totalTweets[$page]) - 1;
-            //     $tweets = $connection->get("followers/list", ["screen_name"=>$key,"next_cursor"=>$next]);
-            //     if( count($tweets) == 1 ) {
-            //         break;
-            //     }
-            //     $totalTweets[] = $tweets;
-            //     $page += 1;
-            // }
-            // $start = 1;
-            // $index = 0;
-            // foreach ($totalTweets as $page) {
-            //     foreach ($page as $key) {
-            //         $user_tweets[$index++] = $key->text;
-            //         $start++;
-            //     }
-            // }
             return $lists;
         }
         
