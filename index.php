@@ -1,12 +1,16 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Login</title>
+<head>
+<title>Login</title>
         <link rel="icon" type="image/png" href="images/twitter.png"/>
         <link rel="stylesheet" href="css/myStyle.css">
+        <link rel="stylesheet" href="css/myIndex.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
-    </head>
-    <body>
-        <div class="row" id="row">
+        <script src="js/myIndex.js"></script>
+</head>
+<body onload="myFunction()" style="margin:0;">
+<div id="loader"></div>
+<div  style="display:none;" id="myDiv" class="animate-bottom row">
             <div class="box">
                 <form action="./controller.php" method='post'>
                     <div class="form-group">
@@ -17,6 +21,6 @@
                     </div>
                 </form>        
             </div>
-        </div>
-    </body>    
+   </div> 
+</body>
 </html>

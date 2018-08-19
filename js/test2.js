@@ -10,7 +10,7 @@ $(document).ready(function() {
             dataType: 'json',
             type: 'GET',
             success: function(results) {
-                $('#test2').hide();
+                 $('#test2').hide();
                 $("#name_user").html(results.name);
                 $("#user_pic").attr('src', results.propic);
                 $('#followers-names').attr('data-value', results.screen_name);
@@ -19,15 +19,12 @@ $(document).ready(function() {
                 length = (length >= 10) ? 10 : length;
                 screen_name = results.screen_name;
                 for (i = 0; i < length; i++) {
-                    if (i == 0) {
-                        list += '<div class="item active" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
-                    } else {
-                        list += '<div class="item" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
-                    }
-
+                        list += '<div>' + results.tweets[i].text + '</div><br>';
+                        c = c+1;
                 }
-                $('.carousel-inner').html(list);
-                $('#carouselExampleIndicators').carousel();
+                $('#test1').slick("slickAdd",list);
+                $('#test1').slick("slickNext");
+                $('#test1').slick("slickRemove");
                 fetchFollowersInfo();
             }
         });
@@ -62,23 +59,30 @@ $(document).ready(function() {
             dataType: 'json',
             type: 'GET',
             success: function(results) {
-               $('.carousel-inner').html("");
-                var name = results.name;
-                $("#name_user_mid").text(name);
-                $("#user_pic_mid").attr('src', results.propic);
-                var list = '';
-                var length = results.tweets.length;
-                length = (length >= 10) ? 10 : length;
-                for (i = 0; i < length; i++) {
-                    if (i == 0) {
-                        list += '<div class="item active" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
-                    } else {
-                        list += '<div class="item" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
-                    }
-                }
-                list = (length == 0) ? '<br />' : list;
-                $('.carousel-inner').html(list);
-                $('#carouselExampleIndicators').carousel();
+            //     //  $('#test1').hide();
+            //      $('#test2').show();
+            //     // for(i=0;i<c;i++) {
+            //     //     $('#test1').slick('slickRemove', $('.slick-slide').index(i));
+            //     // }
+            // //     if(d == 0) {
+            // //     for(j=0;j<d;j++) {
+            // //         $('#test2').slick('slickRemove', $('.slick-slide').index(j));
+            // //     }
+            // // }
+            //     // $('#test2').html("");
+            //     var name = results.name;
+            //     var list = '';
+            //     var length = results.tweets.length;
+            //     length = (length >= 10) ? 10 : length;
+            //     for (i = 0; i < length; i++) {
+            //             list += '<div>' + results.tweets[i].text + '</div><br>';
+            //             d = d +1;
+            //     }
+            //     list = (length == 0) ? '<br />' : list;
+            //     $('#test2').slick("slickAdd",list);
+            //     $('#test2').slick("slickNext");
+            //     $('#test2').slick("slickRemove");
+            //     fetchFollowersInfo();
             }
         });
     });
@@ -101,6 +105,15 @@ $(document).ready(function() {
         }
         $('#search').html(list);
     });
+
+    // slick slider
+    $(".vertical-center-2").slick({
+        dots: true,
+        vertical: true,
+        centerMode: true,
+        slidesToShow: 2,
+        slidesToScroll: 2
+      });
 
 // autosearch https://jqueryui.com/autocomplete/
 $( function() {
