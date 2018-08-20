@@ -2,7 +2,8 @@
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:sans-serif;
+  font-size: 1.50rem;
 }
 
  .topnav .logout{
@@ -97,25 +98,42 @@ a{
     width: 25%;
 }
 
-.close {
+.closeT {
     color: #aaaaaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
+    margin-left: 90%
 }
 
-.close:hover,
-.close:focus {
+.closeT:hover,
+.closeT:focus {
     color: #000;
     text-decoration: none;
     cursor: pointer;
 }
 
-@media screen and (max-width: 650px) {
-  body{
-    background-color: lightblue;
-  }
+.closeD {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-left: 90%
+}
 
+.closeD:hover,
+.closeD:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.marginCSS {
+  text-align: center;
+}
+
+@media screen and (max-width: 650px) {
+ 
   .topnav .search-container {
     float: none;
     width: 100%;
@@ -300,4 +318,89 @@ a{
     border: 1px solid #ccc;
     display: block;
     border-radius: 4px;
+}
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 64px;
+  height: 48px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display:inline-block;
+  width: 25px;
+  height: 25px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid black;
+  border-color: black transparent black transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Center the loader */
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+#myDiv {
+  display: none;
+  text-align: center;
+}
+
+#tn {
+  display: none;
+}
+
+#con {
+  display: none;
 }

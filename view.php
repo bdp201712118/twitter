@@ -3,42 +3,42 @@
 <head>
 <title>Twitter Timeline challenge</title>
 <link rel="icon" type="image/png" href="images/twitter.png"/>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="css/myUI.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="./slick/slick.css">
-<link rel="stylesheet" type="text/css" href="./slick/slick-theme.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-<script src="js/jquery-3.2.1.js"></script>
 <script src="js/myScript.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/jquery.bxslider.js"></script>
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/bootstrap.js"></script>
+<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/full-slider.css" rel="stylesheet">
 <link rel="stylesheet" href="css/myView.css">
-
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
-<body>
+<body onload="myFunction()">
+<div id="loader"></div>
 
-<div class="topnav">
+<!-- Header -->
+<div class="topnav" id="tn">
   <a class="active" href="#home"><i class="fab fa-twitter"></i></a>
   <a href="#" id="download" class="download">Download Tweet&nbsp<i class="fas fa-file-download"></i></a>
   <a href="controller.php?logout=true" class="logout">LogOut &nbsp<i class="fas fa-sign-out-alt"></i></a>
   <div class="search-container" style="float:left;">
-    <form method="post" action="controller.php">
+    <!-- <form method="post" action="controller.php"> -->
       <input type="text" class="search_follower search-box" placeholder="Download Follower" name="key" id="search-box" style="display: inline-block;" />
+      <!-- <button type="submit" id="downloadFollower" name="search_public_user" class="download" style="display: inline-block;"><i class="fas fa-file-download"></i></button>  -->
       <button type="submit" id="downloadFollower" name="search_public_user" class="download" style="display: inline-block;"><i class="fas fa-file-download"></i></button> 
-      <!-- <div id="search1"></div> -->
-    </form>
+      <div class="lds-dual-ring" id="ring"></div>
+    <!-- </form> -->
   </div>
            
 </div>
 
-<div class="row">
+<!-- Main content -->
+<div class="row" id="con">
     <div class="width20">
       <div class="user_detail">
         <div class="user_image">
@@ -63,24 +63,33 @@
 				<div id="followers"></div>
     </div>
 
-   <div class="width75">
-	    <center>
-        <section class="vertical-center-2 slider tweetSlide">
-          <div>
-       
+   <div class="width75" id="width75">
+   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" role="listbox" style="background-color:grey;">
+          <!-- Slide One - Set the background image for this slide in the line below -->
+          <div class="carousel-item " >
+            <div><center>Wait for few minute</center></div>
           </div>
-        </section>
-			</center>
-        </div> 
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <i class="carousel-control-prev-icon" style="color:black;"></i>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <i class="carousel-control-next-icon" style="color:black;"></i>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+   </div> 
 
 </div>
 
 
-
+<!-- ModalBox of search followers -->
 <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
-    <span class="close">&times;</span>
+    <span class="closeT">&times;</span>
     <h3>Choose your format</h3><hr>
     <div class="dropdown">
       <button class="dropbtn">Select format</button>
@@ -94,11 +103,14 @@
   </div>
 </div>
 
-<!-- <div id="myModalFollower" class="modal"> -->
+<!-- ModalBox of search followers to download follower list -->
+<div id="myModalFollower" class="modal">
   <!-- Modal content -->
-  <!-- <div class="modal-content">
-    <span class="close">&times;</span>
-    <h3>Download Followers</h3><hr>
+  <div class="modal-content">
+    <span class="closeD">&times;</span>
+    <h3 id="nameOfFollower">Download Followers</h3><hr>
+    <input type="text" id="myText" value="" readonly>
+    <br>
     <div class="dropdown">
       <button class="dropbtn">Select format</button>
       <div class="dropdown-content">
@@ -110,10 +122,9 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
-  <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
-  <script src="./slick/slick.min.js" type="text/javascript" charset="utf-8"></script>
+ 
  
 
 <script>
@@ -122,24 +133,38 @@
         document.getElementById("myModal").style.display = "block";
     }
     // close the download tweet modal
-    document.getElementsByClassName("close")[0].onclick = function() {
+    document.getElementsByClassName("closeT")[0].onclick = function() {
         document.getElementById("myModal").style.display = "none";
     }
-    // open the download  modal 
-    //  document.getElementById("downloadFollower").onclick = function() {
-    //     document.getElementById("myModalFollower").style.display = "block";
-    // }
-    // // close the download tweet modal
-    // document.getElementsByClassName("closeFollower")[0].onclick = function() {
-    //     document.getElementById("myModalFollower").style.display = "none";
-    // }
-    // to anywhere outside of the modal, close it
+    // open the download follower modal 
+    document.getElementById("downloadFollower").onclick = function() {
+      document.getElementById("myText").value = document.getElementById("search-box").value;
+        document.getElementById("myModalFollower").style.display = "block";
+    }
+    // close the download follower modal
+    document.getElementsByClassName("closeD")[0].onclick = function() {
+        document.getElementById("myModalFollower").style.display = "none";
+    }
     window.onclick = function(event) {
         if (event.target == document.getElementById("myModal")) {
             document.getElementById("myModal").style.display = "none";
         }
     }
 </script>
+<script src="vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
-<script src="js/auto.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+var myVar;
+
+function myFunction() {
+    myVar = setTimeout(showPage, 3000);
+}
+
+function showPage() {
+  document.getElementById("loader").style.display = "none";
+  document.getElementById("con").style.display = "block";
+  document.getElementById("tn").style.display = "block";
+}
+</script>
 </html>

@@ -58,9 +58,13 @@
     // }  
 
     // xml formate
+    // if( isset($_POST['search_public_user']) ) {
+    //     $key = $_POST['key'];
+    //      $model->dowloadXML($key);;
+    // }  
+
     if( isset($_POST['search_public_user']) ) {
-        $key = $_POST['key'];
-         $model->dowloadXML($key);;
+        $_SESSION['downloadUserName']=$_POST['search_public_user'];
     }  
 
 

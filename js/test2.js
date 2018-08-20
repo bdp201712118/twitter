@@ -10,7 +10,7 @@ $(document).ready(function() {
             dataType: 'json',
             type: 'GET',
             success: function(results) {
-                 $('#test2').hide();
+                $('#test2').hide();
                 $("#name_user").html(results.name);
                 $("#user_pic").attr('src', results.propic);
                 $('#followers-names').attr('data-value', results.screen_name);
@@ -19,12 +19,15 @@ $(document).ready(function() {
                 length = (length >= 10) ? 10 : length;
                 screen_name = results.screen_name;
                 for (i = 0; i < length; i++) {
-                        list += '<div>' + results.tweets[i].text + '</div><br>';
-                        c = c+1;
+                    if (i == 0) {
+                        list += '<div class="item active" style="height:100px;text-align: center;color:#fff;font-size: 1.50rem;"><br /><b>' + results.tweets[i].text + '</b></div>';
+                    } else {
+                        list += '<div class="item" style="height:100px;text-align: center;font-size: 1.50rem;color:#fff;"><br /><b>' + results.tweets[i].text + '</b></div>';
+                    }
+
                 }
-                $('#test1').slick("slickAdd",list);
-                $('#test1').slick("slickNext");
-                $('#test1').slick("slickRemove");
+                $('.carousel-inner').html(list);
+                $('#carouselExampleIndicators').carousel();
                 fetchFollowersInfo();
             }
         });
@@ -43,7 +46,7 @@ $(document).ready(function() {
                 length = (length >= 10) ? 10 : length;
                 for (i = 0; i < length; i++) {
                     var id = results.followers[i].screen_name;
-                    var anchor = "<a class='followers-name' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + results.followers[i].name + "</a>";
+                    var anchor = "<a class='followers-name' style='font-size: 1.50rem;' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + results.followers[i].name + "</a>";
                     list += "<div class='col-md-12 follower'>" + "<img src='" + results.followers[i].propic + "' " + "  />" + anchor + "</div>";
                 }
                 $('#followers').html(list);
@@ -59,30 +62,23 @@ $(document).ready(function() {
             dataType: 'json',
             type: 'GET',
             success: function(results) {
-            //     //  $('#test1').hide();
-            //      $('#test2').show();
-            //     // for(i=0;i<c;i++) {
-            //     //     $('#test1').slick('slickRemove', $('.slick-slide').index(i));
-            //     // }
-            // //     if(d == 0) {
-            // //     for(j=0;j<d;j++) {
-            // //         $('#test2').slick('slickRemove', $('.slick-slide').index(j));
-            // //     }
-            // // }
-            //     // $('#test2').html("");
-            //     var name = results.name;
-            //     var list = '';
-            //     var length = results.tweets.length;
-            //     length = (length >= 10) ? 10 : length;
-            //     for (i = 0; i < length; i++) {
-            //             list += '<div>' + results.tweets[i].text + '</div><br>';
-            //             d = d +1;
-            //     }
-            //     list = (length == 0) ? '<br />' : list;
-            //     $('#test2').slick("slickAdd",list);
-            //     $('#test2').slick("slickNext");
-            //     $('#test2').slick("slickRemove");
-            //     fetchFollowersInfo();
+               $('.carousel-inner').html("");
+                var name = results.name;
+                $("#name_user_mid").text(name);
+                $("#user_pic_mid").attr('src', results.propic);
+                var list = '';
+                var length = results.tweets.length;
+                length = (length >= 10) ? 10 : length;
+                for (i = 0; i < length; i++) {
+                    if (i == 0) {
+                        list += '<div class="item active" style="height:100px;text-align: center;color:#fff;font-size: 1.50rem;"><br /><b>' + results.tweets[i].text + '</b></div>';
+                    } else {
+                        list += '<div class="item" style="height:100px;text-align: center;color:#fff;font-size: 1.50rem;"><br /><b>' + results.tweets[i].text + '</b></div>';
+                    }
+                }
+                list = (length == 0) ? '<br />' : list;
+                $('.carousel-inner').html(list);
+                $('#carouselExampleIndicators').carousel();
             }
         });
     });
@@ -98,22 +94,13 @@ $(document).ready(function() {
                 var name = followers_info[i].name;
                 if (pattern.test(name) == true) {
                     var id = followers_info[i].screen_name;
-                    var anchor = "<a class='followers-name' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + name + "</a>";
-                    list += "<div class='col-md-12 follower'>" + "<img src='" + followers_info[i].propic + "' " + " />" + anchor + "</div><br /><br />";
+                    var anchor = "<a class='followers-name' style='font-size: 1.50rem;' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + name + "</a>";
+                    list += "<div class='col-md-12 follower'> " + "<img src='" + followers_info[i].propic + "' " + " />" + anchor + "</div><br /><br />";
                 }
             }
         }
         $('#search').html(list);
     });
-
-    // slick slider
-    $(".vertical-center-2").slick({
-        dots: true,
-        vertical: true,
-        centerMode: true,
-        slidesToShow: 2,
-        slidesToScroll: 2
-      });
 
 // autosearch https://jqueryui.com/autocomplete/
 $( function() {

@@ -3,6 +3,7 @@ $(document).ready(function() {
     var screen_name = "";
     var c = 0;
     var d = 0;
+    $(".lds-dual-ring").hide();
     // get logged in user detail
     function fetchUserInfo() {
         $.ajax({
@@ -20,9 +21,9 @@ $(document).ready(function() {
                 screen_name = results.screen_name;
                 for (i = 0; i < length; i++) {
                     if (i == 0) {
-                        list += '<div class="item active" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
+                        list += '<div class="item active" style="height:100px;text-align: center;color:#fff;font-size: 1.50rem;"><br /><b>' + results.tweets[i].text + '</b></div>';
                     } else {
-                        list += '<div class="item" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
+                        list += '<div class="item" style="height:100px;text-align: center;font-size: 1.50rem;color:#fff;"><br /><b>' + results.tweets[i].text + '</b></div>';
                     }
 
                 }
@@ -46,7 +47,7 @@ $(document).ready(function() {
                 length = (length >= 10) ? 10 : length;
                 for (i = 0; i < length; i++) {
                     var id = results.followers[i].screen_name;
-                    var anchor = "<a class='followers-name' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + results.followers[i].name + "</a>";
+                    var anchor = "<a class='followers-name' style='font-size: 1.50rem;' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + results.followers[i].name + "</a>";
                     list += "<div class='col-md-12 follower'>" + "<img src='" + results.followers[i].propic + "' " + "  />" + anchor + "</div>";
                 }
                 $('#followers').html(list);
@@ -71,9 +72,9 @@ $(document).ready(function() {
                 length = (length >= 10) ? 10 : length;
                 for (i = 0; i < length; i++) {
                     if (i == 0) {
-                        list += '<div class="item active" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
+                        list += '<div class="item active" style="height:100px;text-align: center;color:#fff;font-size: 1.50rem;"><br /><b>' + results.tweets[i].text + '</b></div>';
                     } else {
-                        list += '<div class="item" style="height:100px"><br /><b>' + results.tweets[i].text + '</b></div>';
+                        list += '<div class="item" style="height:100px;text-align: center;color:#fff;font-size: 1.50rem;"><br /><b>' + results.tweets[i].text + '</b></div>';
                     }
                 }
                 list = (length == 0) ? '<br />' : list;
@@ -94,20 +95,32 @@ $(document).ready(function() {
                 var name = followers_info[i].name;
                 if (pattern.test(name) == true) {
                     var id = followers_info[i].screen_name;
-                    var anchor = "<a class='followers-name' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + name + "</a>";
-                    list += "<div class='col-md-12 follower'>" + "<img src='" + followers_info[i].propic + "' " + " />" + anchor + "</div><br /><br />";
+                    var anchor = "<a class='followers-name' style='font-size: 1.50rem;' data-value='" + id + "' >&nbsp;&nbsp;&nbsp;" + name + "</a>";
+                    list += "<div class='col-md-12 follower'> " + "<img src='" + followers_info[i].propic + "' " + " />" + anchor + "</div><br /><br />";
                 }
             }
         }
         $('#search').html(list);
     });
 
-// autosearch https://jqueryui.com/autocomplete/
-$( function() {
-    $( ".search-box" ).autocomplete({
-      source: 'controller.php?autosearch=true'
+    // autosearch from https://jqueryui.com/autocomplete/
+    $( function() {
+        $( ".search-box" ).autocomplete({
+        source: 'controller.php?autosearch=true'
+        });
     });
-  } );
- 
+
+    // show loader on click of searchbox 
+    $(".search-box").click(function(){
+       
+        $(".lds-dual-ring").show();
+    });
+
+     // hide loader on click of download button
+    $("#downloadFollower").click(function(){    
+        $(".lds-dual-ring").hide();
+    });
+
+    // display logged in user information on page load
     fetchUserInfo();
 });
