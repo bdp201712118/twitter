@@ -3,6 +3,7 @@
 <head>
 <title>Twitter Timeline challenge</title>
 <link rel="icon" type="image/png" href="images/twitter.png"/>
+
 <link rel="stylesheet" href="css/myUI.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
@@ -10,18 +11,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/myScript.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/jquery-3.2.1.js"></script>
 <script src="js/jquery.bxslider.js"></script>
 <script src="js/jquery-1.10.2.js"></script>
-<script src="js/bootstrap.js"></script>
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="css/full-slider.css" rel="stylesheet">
 <link rel="stylesheet" href="css/myView.css">
 </head>
 <body onload="myFunction()">
 <div id="loader"></div>
-
-<!-- Header -->
 <div class="topnav" id="tn">
   <a class="active" href="#home"><i class="fab fa-twitter"></i></a>
   <a href="#" id="download" class="download">Download Tweet&nbsp<i class="fas fa-file-download"></i></a>
@@ -37,7 +36,6 @@
            
 </div>
 
-<!-- Main content -->
 <div class="row" id="con">
     <div class="width20">
       <div class="user_detail">
@@ -62,9 +60,8 @@
 					</div>
 				<div id="followers"></div>
     </div>
-
-   <div class="width75" id="width75">
-   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+   <div class="width75">
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" role="listbox" style="background-color:grey;">
           <!-- Slide One - Set the background image for this slide in the line below -->
           <div class="carousel-item " >
@@ -81,11 +78,8 @@
         </a>
       </div>
    </div> 
-
 </div>
 
-
-<!-- ModalBox of search followers -->
 <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
@@ -103,24 +97,24 @@
   </div>
 </div>
 
-<!-- ModalBox of search followers to download follower list -->
 <div id="myModalFollower" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="closeD">&times;</span>
     <h3 id="nameOfFollower">Download Followers</h3><hr>
-    <input type="text" id="myText" value="" readonly>
+    <form method="get" action="controller.php" class="form-group">
+    <input class="form-control" type="text" id="myText" name="uName" value="" readonly>
     <br>
-    <div class="dropdown">
-      <button class="dropbtn">Select format</button>
-      <div class="dropdown-content">
-        <a role="menuitem" tabindex="-1" class="download" data-value='google-spreadhseet' href="./controller.php?download=true&type=google-spread-sheet">Google SpreadSheet</a>
-        <a role="menuitem" tabindex="-1" class="download" data-value='xml'  href="./controller.php?download=true&type=xml">XML</a>
-        <a role="menuitem" tabindex="-1" class="download" data-value='json'  href="./controller.php?download=true&type=json">Json</a>
-        <a role="menuitem" tabindex="-1" class="download" data-value='xls'  href="./controller.php?download=true&type=xls">XLS</a>
-        <a role="menuitem" tabindex="-1" class="download" data-value='csv'  href="./controller.php?download=true&type=csv">CSV</a>
-      </div>
-    </div>
+    <div >
+      <select class="form-control" id="sel1" name="format" style="font-size: 1.5rem;">
+        <option value="0">Select format</option>
+        <option value="google-spread-sheet">Google Spreadsheet</option>
+        <option value="xml">XML</option>
+        <option value="pdf">PDF</option></option>
+      </select>
+    </div><br>
+    <button type="submit" id="downloadFile" style="font-size: 1.5rem" class="btn btn-primary" name="downloadFile">Download File</button>
+    </form>
   </div>
 </div>
 
@@ -136,12 +130,12 @@
     document.getElementsByClassName("closeT")[0].onclick = function() {
         document.getElementById("myModal").style.display = "none";
     }
-    // open the download follower modal 
+    // open the download tweet modal 
     document.getElementById("downloadFollower").onclick = function() {
       document.getElementById("myText").value = document.getElementById("search-box").value;
         document.getElementById("myModalFollower").style.display = "block";
     }
-    // close the download follower modal
+    // close the download tweet modal
     document.getElementsByClassName("closeD")[0].onclick = function() {
         document.getElementById("myModalFollower").style.display = "none";
     }
@@ -151,6 +145,7 @@
         }
     }
 </script>
+ 
 <script src="vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -167,4 +162,5 @@ function showPage() {
   document.getElementById("tn").style.display = "block";
 }
 </script>
+</body>
 </html>

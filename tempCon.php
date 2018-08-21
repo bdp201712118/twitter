@@ -42,30 +42,35 @@
             header('location:lib\google-drive-api\index.php');
         }
     }
-
-     // download follower
-     if(isset($_GET['uName']) ) {
-        $format=$_GET['format'];
-        $uName = $_GET['uName'];
-        if($format == "xml") {
-            $model->dowloadXML($uName);
-        } else if($format =="pdf") {
-            $model->downloadPDF($uName);
-        } else if($format == "google-spread-sheet") {
-            $_SESSION['downloadFormat'] = $model->uploadGoogleDriveFollower($uName);
-            header('location:lib\google-drive-api\index.php');
-        }
-    }
        
-    //  search public follower
+    // search public user
+    // if( isset($_POST['search_public_user']) ) {
+    //     $key = $_POST['key'];
+    //     $model->uploadGoogleDriveFollowerList($key);
+    //     header('location: view.php');
+    // }  
+
+    // google drive
+    // if( isset($_POST['search_public_user']) ) {
+    //     $key = $_POST['key'];
+    //     $_SESSION['downloadFormat'] = $model->uploadGoogleDriveFollower($key);
+    //     header('location:lib\google-drive-api\index.php');
+    // }  
+
+    // xml formate
+    // if( isset($_POST['search_public_user']) ) {
+    //     $key = $_POST['key'];
+    //      $model->dowloadXML($key);;
+    // }  
+
     if( isset($_POST['search_public_user']) ) {
         $_SESSION['downloadUserName']=$_POST['search_public_user'];
     }  
 
 
-    // autosearch follower of logged in user
+    // autosearch
     if( isset($_GET['autosearch']) && $_GET['autosearch']==true ) {
-        $model->searchFollower();
+        $model->searchfun();
     }
 
     // logout

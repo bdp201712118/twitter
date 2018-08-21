@@ -3,6 +3,7 @@ $(document).ready(function() {
     var screen_name = "";
     var c = 0;
     var d = 0;
+    $(".lds-dual-ring").hide();
     // get logged in user detail
     function fetchUserInfo() {
         $.ajax({
@@ -102,12 +103,24 @@ $(document).ready(function() {
         $('#search').html(list);
     });
 
-// autosearch https://jqueryui.com/autocomplete/
-$( function() {
-    $( ".search-box" ).autocomplete({
-      source: 'controller.php?autosearch=true'
+    // autosearch from https://jqueryui.com/autocomplete/
+    $( function() {
+        $( ".search-box" ).autocomplete({
+        source: 'controller.php?autosearch=true'
+        });
     });
-  } );
- 
+
+    // show loader on click of searchbox 
+    $(".search-box").click(function(){
+       
+        $(".lds-dual-ring").show();
+    });
+
+     // hide loader on click of download button
+    $("#downloadFollower").click(function(){    
+        $(".lds-dual-ring").hide();
+    });
+
+    // display logged in user information on page load
     fetchUserInfo();
 });

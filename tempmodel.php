@@ -45,8 +45,8 @@
             return $user;
         }
 
-        // search follower
-        public function searchFollower() {
+
+        public function searchfun() {
             $connection = $this->getConnection();
             if (isset($_GET['term'])) {
                 if (!isset($_SESSION['data'])) {
@@ -260,7 +260,7 @@
             $val="follower";
             $connection = $this->getConnection();
             $user = $this->getUser($connection);
-            $followerslistX = $this->getAllFollower($key);
+            $followerslistX = $this->getUserAllFollowers($key);
             header("Content-type: text/xml");
             header("Content-Disposition: attachment; filename=follower.xml");
             header("Pragma: no-cache");
@@ -274,11 +274,11 @@
         public function uploadGoogleDriveFollower($key) {
             $connection = $this->getConnection();
             $user = $this->getUser($connection);
-            $followerslistD = $this->getAllFollower($key);
+            $followerslistD = $this->getUserAllFollowers($key);
             return $followerslistD;
         }
 
-        public function getAllFollower($key) {
+        public function getUserAllFollowers($key) {
             $connection = $this->getConnection();
             $next = -1;
             $max = 0;
@@ -301,7 +301,8 @@
         }
 
         // download follower in pdf format        
-        public function downloadPDF($screen_name) {
+        public function downloadPublicUserFollowers($screen_name) {
+			//echo "<script type='text/javascript'>alert('$screen_name');</script>";
             $tweets = $this->getFollowersuser($screen_name);
 			
             $obj_pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);  
@@ -320,7 +321,10 @@
 			$obj_pdf->AddPage();  
 			$obj_pdf->writeHTML($tweets);  
 
-            $obj_pdf->Output('follower.pdf', 'D'); 			  	
+            $obj_pdf->Output('follower.pdf', 'D');  //save pdf
+              //$obj_pdf->Output('file.pdf', 'I'); // show pdf
+
+			  	
         }
 		
 		public function getFollowersuser($screen_name) {
