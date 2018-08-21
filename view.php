@@ -20,23 +20,24 @@
 <link rel="stylesheet" href="css/myView.css">
 </head>
 <body onload="myFunction()">
-<div id="loader"></div>
-<div class="topnav" id="tn">
-  <a class="active" href="#home"><i class="fab fa-twitter"></i></a>
-  <a href="#" id="download" class="download">Download Tweet&nbsp<i class="fas fa-file-download"></i></a>
-  <a href="controller.php?logout=true" class="logout">LogOut &nbsp<i class="fas fa-sign-out-alt"></i></a>
-  <div class="search-container" style="float:left;">
-    <!-- <form method="post" action="controller.php"> -->
+
+  <!-- loader -->
+  <div id="loader"></div>
+
+  <!-- header -->
+  <div class="topnav" id="tn">
+    <a class="active" href="#home"><i class="fab fa-twitter"></i></a>
+    <a href="#" id="download" class="download">Download Tweet&nbsp<i class="fas fa-file-download"></i></a>
+    <a href="controller.php?logout=true" class="logout">LogOut &nbsp<i class="fas fa-sign-out-alt"></i></a>
+    <div class="search-container" style="float:left;">
       <input type="text" class="search_follower search-box" placeholder="Download Follower" name="key" id="search-box" style="display: inline-block;" />
-      <!-- <button type="submit" id="downloadFollower" name="search_public_user" class="download" style="display: inline-block;"><i class="fas fa-file-download"></i></button>  -->
       <button type="submit" id="downloadFollower" name="search_public_user" class="download" style="display: inline-block;"><i class="fas fa-file-download"></i></button> 
       <div class="lds-dual-ring" id="ring"></div>
-    <!-- </form> -->
+    </div>    
   </div>
-           
-</div>
 
-<div class="row" id="con">
+  <!-- main content -->
+  <div class="row" id="con">
     <div class="width20">
       <div class="user_detail">
         <div class="user_image">
@@ -60,10 +61,11 @@
 					</div>
 				<div id="followers"></div>
     </div>
+
+    <!-- carousel slider plugin -->
    <div class="width75">
       <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner" role="listbox" style="background-color:grey;">
-          <!-- Slide One - Set the background image for this slide in the line below -->
           <div class="carousel-item " >
             <div><center>Wait for few minute</center></div>
           </div>
@@ -80,7 +82,9 @@
    </div> 
 </div>
 
-<div id="myModal" class="modal">
+  <!-- custom css for modalbox -->
+  <!-- download tweet modalbox -->
+  <div id="myModal" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="closeT">&times;</span>
@@ -94,10 +98,12 @@
         <!-- <a role="menuitem" tabindex="-1" class="download"  href="./controller.php?download=true&format=xls">XLS</a> -->
       </div>
     </div>
+    </div>
   </div>
-</div>
 
-<div id="myModalFollower" class="modal">
+
+  <!-- download follower modalbox -->
+  <div id="myModalFollower" class="modal">
   <!-- Modal content -->
   <div class="modal-content">
     <span class="closeD">&times;</span>
@@ -116,7 +122,7 @@
     <button type="submit" id="downloadFile" style="font-size: 1.5rem" class="btn btn-primary" name="downloadFile">Download File</button>
     </form>
   </div>
-</div>
+  </div>
 
  
  
@@ -149,6 +155,9 @@
 <script src="vendor/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- css loader script -->
+
 <script>
 var myVar;
 
