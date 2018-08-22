@@ -278,18 +278,19 @@
             return $followerslistD;
         }
 
-        // new method to get follower list (pagination)
         public function getAllFollower($key) {
             $connection = $this->getConnection();
             $next = -1;
-        
+            $max = 0;
             while( $next != 0 ) {
-                 $friends = $connection->get("followers/list", ["screen_name"=>$key,"cursor"=>$friends->next_cursor]);
-                //$friends = $connection->get('followers/ids', array('screen_name' => $key));
+                $friends = $connection->get("followers/list", ["screen_name"=>$key,"next_cursor"=>$next]);
                 $followers[] = $friends;
-                // $next = $friends->next_cursor;
+                $next = $friends->next_cursor;
+                if($max==0)
+                    break;
+                $max++;
             }
-            // $followers[] = $connection->get('followers/ids', array('screen_name' => $key, 'cursor' => 9999999999));
+            $lists = [];
             foreach( $followers as $val ) {
                 foreach( $val->users as $usr ) {
                     $n = $usr->name;
@@ -298,22 +299,6 @@
              }
             return $lists;
         }
-
-        // old method to get all follower
-
-        // public function getAllFollower($key) {
-        //     $connection = $this->getConnection();
-        //     $next = -1;
-        
-        //      $followers[] = $connection->get('followers/ids', array('screen_name' => $key));
-        //     foreach( $followers as $val ) {
-        //         foreach( $val->users as $usr ) {
-        //             $n = $usr->name;
-        //             $lists[] = $n;
-        //         }
-        //      }
-        //     return $lists;
-        // }
 
         // download follower in pdf format        
         public function downloadPDF($screen_name) {
