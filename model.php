@@ -278,6 +278,7 @@
             return $followerslistD;
         }
 
+        // new method to get follower list of user(pagination)
         public function getAllFollower($key) {
             $connection = $this->getConnection();
             $next = -1;
@@ -299,6 +300,20 @@
              }
             return $lists;
         }
+
+        // old method to get followerlis of user
+        // public function getAllFollower($key) {
+        //     $connection = $this->getConnection("followers/list", array('screen_name'=> $key));
+        //     $followers[] = $connection->get(); 
+        //     $lists = [];
+        //     foreach( $followers as $val ) {
+        //         foreach( $val->users as $usr ) {
+        //             $n = $usr->name;
+        //             $lists[] = $n;
+        //         }
+        //      }
+        //     return $lists;
+        // }
 
         // download follower in pdf format        
         public function downloadPDF($screen_name) {
