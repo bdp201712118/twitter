@@ -283,15 +283,18 @@
         // public function getAllFollower($key) {
         //     $connection = $this->getConnection();
         //     $cursor = -1;
-        //     $max = 0;
-        //     while( $cursor != 0 ) {
-        //         $followerArray = $connection->get("followers/list", ["screen_name"=>$key,"next_cursor"=>$cursor]);
-        //         $followers[] = $followerArray;
-        //         $cursor = $followerArray->next_cursor;
-        //         if($max==0)
-        //             break;
-        //         $max++;
-        //     }
+        //     $arrayListFollower = $connection->get("followers/list", ["count" => 200,"screen_name"=>$key]);
+	// 	$followers[] = $arrayListFollower;
+	// 	$page = 0;
+	//     for ($count = 200; $count <= 3200; $count += 200) { 
+	//         $arrayListFollower = $connection->get("followers/list", ["count" => 200,"screen_name"=>$key,"next_cursor"=>$cursor]);
+	// 		$cursor = $arrayListFollower->next_cursor;
+	//         if( count($arrayListFollower) == 1 ) {
+	//                     break;
+	//         }
+	//           $followers[] = $arrayListFollower;
+	//           $page += 1;
+	//   }
         //     $lists = [];
         //     foreach( $followers as $val ) {
         //         foreach( $val->users as $usr ) {
