@@ -132,7 +132,7 @@ a{
   text-align: center;
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 930px) {
  
   .topnav .search-container {
     float: none;
