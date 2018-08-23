@@ -278,27 +278,44 @@
             return $followerslistD;
         }
 
+        // download follower list of user (pagignation)
+        // using this method you can get follower upTo 2000, after download follower you are not able to perform other action so i create other function that download follower upto 200.
+        // public function getAllFollower($key) {
+        //     $connection = $this->getConnection();
+        //     $cursor = -1;
+        //     $max = 0;
+        //     while( $cursor != 0 ) {
+        //         $followerArray = $connection->get("followers/list", ["screen_name"=>$key,"next_cursor"=>$cursor]);
+        //         $followers[] = $followerArray;
+        //         $cursor = $followerArray->next_cursor;
+        //         if($max==0)
+        //             break;
+        //         $max++;
+        //     }
+        //     $lists = [];
+        //     foreach( $followers as $val ) {
+        //         foreach( $val->users as $usr ) {
+        //             $n = $usr->name;
+        //             $lists[] = $n;
+        //         }
+        //      }
+        //     return $lists;
+        // }
+
+        // download follower list user
         public function getAllFollower($key) {
             $connection = $this->getConnection();
-            $next = -1;
-            $max = 0;
-            while( $next != 0 ) {
-                $friends = $connection->get("followers/list", ["screen_name"=>$key,"next_cursor"=>$next]);
-                $followers[] = $friends;
-                $next = $friends->next_cursor;
-                if($max==0)
-                    break;
-                $max++;
-            }
-            $lists = [];
-            foreach( $followers as $val ) {
-                foreach( $val->users as $usr ) {
-                    $n = $usr->name;
-                    $lists[] = $n;
-                }
-             }
-            return $lists;
+                $followers[] = $connection->get("followers/list", array('count' => 200,'screen_name'=> $key)); 
+                $lists = [];
+                foreach( $followers as $val ) {
+                    foreach( $val->users as $usr ) {
+                        $n = $usr->name;
+                        $lists[] = $n;
+                    }
+                 }
+                return $lists;
         }
+        
 
         // download follower in pdf format        
         public function downloadPDF($screen_name) {
