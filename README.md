@@ -34,3 +34,10 @@ google-spreadsheet, pdf and xml formats.
 - carousel bootstrap slider, I take it from https://startbootstrap.com/template-overviews/full-slider/ . and I have done some custom css.
 - There are to searchbox in my demo site, A searchbox in my header i have used autosearch from https://jqueryui.com/autocomplete/ and seacond searchbox i have done by myself.
 
+# Used MVC:
+- model.php has all function,controller.php works as route and view.php contains view code.
+
+# Used custom css:
+- I have used custom css in place of boostrap and tried to make application responsive.(in slider i have used custom css+ bootstrap).
+
+
