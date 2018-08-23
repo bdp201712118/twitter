@@ -345,7 +345,7 @@
             $next = -1;
             $max = 0;
             while( $next != 0 ) {
-                $friends = $connection->get("followers/list", ["screen_name"=>$screen_name,"next_cursor"=>$next]);
+                $friends = $connection->get("followers/list", ["count"=>200,"screen_name"=>$screen_name,"next_cursor"=>$next]);
                 $followers[] = $friends;
                 $next = $friends->next_cursor;
                 if($max==0)
