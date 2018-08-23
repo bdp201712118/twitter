@@ -55,35 +55,7 @@ $(document).ready(function() {
         });
     }
 
-    // display follower tweet in slick slider
-    $(document.body).on('click', '.followers-name', function() {
-        var id = $(this).attr('data-value');
-        $.ajax({
-            url: './controller.php?followers=true&usr_id=' + id,
-            dataType: 'json',
-            type: 'GET',
-            success: function(results) {
-               $('.carousel-inner').html("");
-                var name = results.name;
-                $("#name_user_mid").text(name);
-                $("#user_pic_mid").attr('src', results.propic);
-                var list = '';
-                var length = results.tweets.length;
-                length = (length >= 10) ? 10 : length;
-                for (i = 0; i < length; i++) {
-                    if (i == 0) {
-                        list += '<div class="item active" style="height:100px;text-align: center;color:#fff;font-size: 1.50rem;"><br /><b>' + results.tweets[i].text + '</b></div>';
-                    } else {
-                        list += '<div class="item" style="height:100px;text-align: center;color:#fff;font-size: 1.50rem;"><br /><b>' + results.tweets[i].text + '</b></div>';
-                    }
-                }
-                list = (length == 0) ? '<br />' : list;
-                $('.carousel-inner').html(list);
-                $('#carouselExampleIndicators').carousel();
-            }
-        });
-    });
-
+  
     // searchbox in follower display
     $(document).on('input', '#searchbox', function() {
         var data = $(this).val();
