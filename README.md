@@ -25,7 +25,7 @@ google-spreadsheet, pdf and xml formats.
   [http://twitter.alampatawebsolution.a2hosted.com][df1]
 
 # Links to libraries
-- php oauth library: https://github.com/abraham/twitteroauth
+- php library: https://github.com/abraham/twitteroauth
 - google drive library: https://developers.google.com/drive/api/v3/quickstart/php
 - PDF library: https://github.com/tecnickcom/tc-lib-pdf 
 - Excel library: https://github.com/PHPOffice/PHPExcel
