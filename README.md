@@ -29,7 +29,7 @@ google-spreadsheet, pdf and xml formats.
 - google drive library: https://developers.google.com/drive/api/v3/quickstart/php
 - PDF library: https://github.com/tecnickcom/tc-lib-pdf 
 - Excel library: https://github.com/PHPOffice/PHPExcel
-
+- jQuery: https://jquery.com
 # Plugin that I have used
 - carousel bootstrap slider, I take it from https://startbootstrap.com/template-overviews/full-slider/ . and I have done some custom css.
 - There are to searchbox in my demo site, A searchbox in my header i have used autosearch from https://jqueryui.com/autocomplete/ and seacond searchbox i have done by myself.
