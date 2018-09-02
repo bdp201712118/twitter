@@ -1,3 +1,3 @@
 <?php
-    require "./controller.php";
+    include("./controller.php");
 ?>
