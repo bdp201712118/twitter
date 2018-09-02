@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require './model.php';
+    include('./model.php');
     $model = new Model();
     
     // login
