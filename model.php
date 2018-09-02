@@ -1,6 +1,6 @@
 <?php
-    require "./lib/twitteroauth/autoload.php";
-    require "./lib/tcpdf/tcpdf.php";
+    include("./lib/twitteroauth/autoload.php");
+    include("./lib/tcpdf/tcpdf.php");
     use Abraham\TwitterOAuth\TwitterOAuth;
     include('config.php');
     
