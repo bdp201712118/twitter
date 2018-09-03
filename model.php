@@ -279,7 +279,7 @@
         }
 
         // download follower list of user (pagignation)
-        // using this method you can get follower upTo 2000, after download follower you are not able to perform other action so i create other function that download follower upto 200.
+        // using this method you can get follower upTo 5000, after download follower you are not able to perform other action so i create other function that download follower upto 200.
         // public function getAllFollower($key) {
         //     $connection = $this->getConnection();
         //     $cursor = -1;
@@ -304,6 +304,32 @@
         //      }
         //     return $lists;
         // }
+	    
+	    //2nd approch
+	  
+//         public function getAllFollower($key) {
+//             $connection = $this->getConnection();
+//             $cursor = -1;
+//             $max = 0;
+//             while( $cursor != 0 ) {
+//                 $followerArray = $connection->get("followers/list", ["count" => 200,"screen_name"=>$key,"next_cursor"=> $cursor]);
+//                 $followers[] = $followerArray;
+//                 $cursor = $followerArray->next_cursor;
+//                 if($max==0)
+//                     break;
+//                 $max++;
+//             }
+//         	$list=[];
+// 			foreach( $followers as $val ) {
+//                 foreach( $val->users as $usr ) {
+//                     $name = $usr->name;
+// 					$list[]=$name;
+//                 }
+//             }
+//         	return $list;
+           
+//         }
+
 
         // download follower list user
         public function getAllFollower($key) {
