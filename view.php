@@ -30,7 +30,7 @@
     <a href="#" id="download" class="download">Download Tweet&nbsp<i class="fas fa-file-download"></i></a>
     <a href="controller.php?logout=true" class="logout">LogOut &nbsp<i class="fas fa-sign-out-alt"></i></a>
     <div class="search-container" style="float:left;">
-      <input type="text" class="search_follower search-box" placeholder="Download Follower" name="key" id="search-box" style="display: inline-block;" />
+      <input type="text" class="search_follower search-box" placeholder="Download Follower" name="key" id="search-box" style="display: inline-block;" onfocusout="myFocusOut()"/>
       <button type="submit" id="downloadFollower" name="search_public_user" class="download" style="display: inline-block;"><i class="fas fa-file-download"></i></button> 
       <div class="lds-dual-ring" id="ring"></div>
     </div>    
@@ -44,13 +44,13 @@
           <img id="user_pic" src="" style="border-radius: 45%" />
         </div>
         <div class="user_name">
-          <h4 id="name_user"></h4>
+          <a id="name_user"></a>
         </div>
       </div>
       <div></div>
       <div class="width100">
 				<form>
-					<input type="text" class="search_follower" placeholder="Search your follower" id="searchbox" name="followers_search" autocomplete="off" />
+					<input type="text" class="search_follower" placeholder="Search your follower" style="width:100%;" id="searchbox" name="followers_search" autocomplete="off" />
           <div></div>
       	</form>
 				</div>
@@ -108,7 +108,7 @@
   <div class="modal-content">
     <span class="closeD">&times;</span>
     <h3 id="nameOfFollower">Download Followers</h3><hr>
-    <form method="get" action="controller.php" class="form-group">
+    <!-- <form method="get" class="form-group"> -->
     <input class="form-control" type="text" id="myText" name="uName" value="" readonly>
     <br>
     <div >
@@ -119,12 +119,37 @@
         <option value="pdf">PDF</option></option>
       </select>
     </div><br>
-    <button type="submit" id="downloadFile" style="font-size: 1.5rem" class="btn btn-primary" name="downloadFile">Download File</button>
-    </form>
+    <button onClick="getFollower('rtCamp',true)" id="downloadFile" style="font-size: 1.5rem" class="btn btn-primary" name="downloadFile">Download File</button>
+    <!-- </form> -->
   </div>
   </div>
 
  
+<script>
+  function getFollower(screenName, initialCall) {
+      if(initialCall) {
+        var req = new XMLHttpRequest();
+        var strURL = "downloadFollowers.php?screenName="+screenName;
+        if (req) {
+            req.onreadystatechange = function () {
+                if (req.readyState == 4) {
+                    if (req.status == 200) {
+                      if(req.responseText != "Success") {                        
+                        setTimeout(function () {
+                          getFollower(screenName, true);
+                        }, 1200000);
+                      }
+                    }
+                }
+            }
+            req.open("GET", strURL, true);
+            req.send(null);
+        }
+      } else {
+
+      }
+  }
+</script>
  
 
 <script>
@@ -163,6 +188,10 @@ var myVar;
 
 function myFunction() {
     myVar = setTimeout(showPage, 3000);
+}
+
+function myFocusOut() {
+  document.getElementById("ring").style.display = "none";
 }
 
 function showPage() {
