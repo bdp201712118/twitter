@@ -1,6 +1,6 @@
 <?php
-    include("./lib/twitteroauth/autoload.php");
-    include("./lib/tcpdf/tcpdf.php");
+    require "./lib/twitteroauth/autoload.php";
+    require "./lib/tcpdf/tcpdf.php";
     use Abraham\TwitterOAuth\TwitterOAuth;
     include('config.php');
     
@@ -280,70 +280,70 @@
 
         // download follower list of user (pagignation)
         // using this method you can get follower upTo 5000, after download follower you are not able to perform other action so i create other function that download follower upto 200.
+        public function getAllFollower($key) {
+            $connection = $this->getConnection();
+            $cursor = -1;
+            $max = 0;
+            while( $cursor != 0 ) {
+                $followerArray = $connection->get("followers/list", ["count" => 200,"screen_name"=>$key,"next_cursor"=> $cursor]);
+                $followers[] = $followerArray;
+                $cursor = $followerArray->next_cursor;
+                if($max==0)
+                    break;
+                $max++;
+            }
+        	$list=[];
+			foreach( $followers as $val ) {
+                foreach( $val->users as $usr ) {
+                    $name = $usr->name;
+					$list[]=$name;
+                }
+            }
+        	return $list;
+           
+        }
+
+
         // public function getAllFollower($key) {
         //     $connection = $this->getConnection();
         //     $cursor = -1;
-        //     $arrayListFollower = $connection->get("followers/list", ["count" => 200,"screen_name"=>$key]);
-	// 	$followers[] = $arrayListFollower;
-	// 	$page = 0;
-	//     for ($count = 200; $count <= 3200; $count += 200) { 
-	//         $arrayListFollower = $connection->get("followers/list", ["count" => 200,"screen_name"=>$key,"next_cursor"=>$cursor]);
-	// 		$cursor = $arrayListFollower->next_cursor;
-	//         if( count($arrayListFollower) == 1 ) {
-	//                     break;
-	//         }
-	//           $followers[] = $arrayListFollower;
-	//           $page += 1;
-	//   }
-        //     $lists = [];
-        //     foreach( $followers as $val ) {
-        //         foreach( $val->users as $usr ) {
-        //             $n = $usr->name;
-        //             $lists[] = $n;
+        //     $tweets = $connection->get("followers/list",["count" => 200,"screen_name" => $key]);
+        //     $totalTweets[] = $tweets;
+        //     $page = 0;
+        //     for ($count = 200; $count <= 3200; $count += 200) { 
+        //         $max = count($totalTweets[$page]) - 1;
+        //         $tweets = $connection->get('followers/list', ["count" => 200,"screen_name" => $screen_name,"next_cursor"=>$cursor]);
+        //         if( count($tweets) == 1 ) {
+        //             break;
         //         }
-        //      }
-        //     return $lists;
+        //         $cursor = $followerArray->next_cursor;
+        //         $totalTweets[] = $tweets;
+        //         $page += 1;
+        //     }
+        //     $start = 1;
+        //     $index = 0;
+        //     foreach ($totalTweets as $page) {
+        //         foreach ($page as $key) {
+        //             $user_tweets[$index++] = $key->text;
+        //             $start++;
+        //         }
+        //     }
+        //     return $user_tweets;
         // }
-	    
-	    //2nd approch
-	  
-//         public function getAllFollower($key) {
-//             $connection = $this->getConnection();
-//             $cursor = -1;
-//             $max = 0;
-//             while( $cursor != 0 ) {
-//                 $followerArray = $connection->get("followers/list", ["count" => 200,"screen_name"=>$key,"next_cursor"=> $cursor]);
-//                 $followers[] = $followerArray;
-//                 $cursor = $followerArray->next_cursor;
-//                 if($max==0)
-//                     break;
-//                 $max++;
-//             }
-//         	$list=[];
-// 			foreach( $followers as $val ) {
-//                 foreach( $val->users as $usr ) {
-//                     $name = $usr->name;
-// 					$list[]=$name;
-//                 }
-//             }
-//         	return $list;
-           
-//         }
-
 
         // download follower list user
-        public function getAllFollower($key) {
-            $connection = $this->getConnection();
-                $followers[] = $connection->get("followers/list", array('count' => 200,'screen_name'=> $key)); 
-                $lists = [];
-                foreach( $followers as $val ) {
-                    foreach( $val->users as $usr ) {
-                        $n = $usr->name;
-                        $lists[] = $n;
-                    }
-                 }
-                return $lists;
-        }
+        // public function getAllFollower($key) {
+        //     $connection = $this->getConnection();
+        //         $followers[] = $connection->get("followers/list", array('count' => 200,'screen_name'=> $key)); 
+        //         $lists = [];
+        //         foreach( $followers as $val ) {
+        //             foreach( $val->users as $usr ) {
+        //                 $n = $usr->name;
+        //                 $lists[] = $n;
+        //             }
+        //          }
+        //         return $lists;
+        // }
         
 
         // download follower in pdf format        
@@ -369,31 +369,61 @@
             $obj_pdf->Output('follower.pdf', 'D'); 			  	
         }
 		
-		public function getFollowersuser($screen_name) {
-            $connection = $this->getConnection();
-            $next = -1;
-            $max = 0;
-            while( $next != 0 ) {
-                $friends = $connection->get("followers/list", ["count"=>200,"screen_name"=>$screen_name,"next_cursor"=>$next]);
-                $followers[] = $friends;
-                $next = $friends->next_cursor;
-                if($max==0)
-                    break;
-                $max++;
-            }
+		// public function getFollowersuser($screen_name) {
+        //     $connection = $this->getConnection();
+        //     $next = -1;
+        //     $max = 0;
+        //     while( $next != 0 ) {
+        //         $friends = $connection->get("followers/list", ["count"=>200,"screen_name"=>$screen_name,"next_cursor"=>$next]);
+        //         $followers[] = $friends;
+        //         $next = $friends->next_cursor;
+        //         if($max==0)
+        //             break;
+        //         $max++;
+        //     }
          
 			
-			$pd = '<center><h2> RTcamp twitter timeline challenge </h2></center><br><h4>'. $screen_name .'\'s&nbsp;follower list</h4> <hr>';
-			foreach( $followers as $val ) {
-                foreach( $val->users as $usr ) {
-                    $n = $usr->name;
-					$pd .= '<h5>'.$n.'</h5><br>';
-                }
-            }
+		// 	$pd = '<center><h2> RTcamp twitter timeline challenge </h2></center><br><h4>'. $screen_name .'\'s&nbsp;follower list</h4> <hr>';
+		// 	foreach( $followers as $val ) {
+        //         foreach( $val->users as $usr ) {
+        //             $n = $usr->name;
+		// 			$pd .= '<h5>'.$n.'</h5><br>';
+        //         }
+        //     }
             
-			return $pd;
+		// 	return $pd;
+           
+        // }
+
+        
+        public function getFollowersuser($screen_name) {
+            $connection = $this->getConnection();
+				$count = 1;
+				$cursor = -1;
+				while($count != 0)
+				{
+					$follower = $connection->get('followers/ids',array('count'=>200,'screen_name'=>$screen_name,'cursor'=>$cursor));
+					$cursor = $follower->next_cursor;
+					if(!isset($cursor))
+					{	
+						break;
+					}
+					
+					$namearrays= array_chunk($follower->ids, 100);
+					foreach($namearrays as $implode) {
+						$data = $connection->get('users/lookup', array('user_id' => implode(',', $implode)));
+						foreach($data as $users) {
+							$name = $users->name;
+							$htmltext .= '<h5>'.$name.'</h5><br>';
+							$count++;
+						}
+					}
+				}
+				return $htmltext;
            
         }
+        
+        
 
         // logout
         public function logout() {
