@@ -108,7 +108,7 @@
   <div class="modal-content">
     <span class="closeD">&times;</span>
     <h3 id="nameOfFollower">Download Followers</h3><hr>
-    <!-- <form method="get" class="form-group"> -->
+    <form method="get" action="controller.php" class="form-group">
     <input class="form-control" type="text" id="myText" name="uName" value="" readonly>
     <br>
     <div >
@@ -119,37 +119,12 @@
         <option value="pdf">PDF</option></option>
       </select>
     </div><br>
-    <button onClick="getFollower('rtCamp',true)" id="downloadFile" style="font-size: 1.5rem" class="btn btn-primary" name="downloadFile">Download File</button>
-    <!-- </form> -->
+    <button type="submit" id="downloadFile" style="font-size: 1.5rem" class="btn btn-primary" name="downloadFile">Download File</button>
+    </form>
   </div>
   </div>
 
  
-<script>
-  function getFollower(screenName, initialCall) {
-      if(initialCall) {
-        var req = new XMLHttpRequest();
-        var strURL = "downloadFollowers.php?screenName="+screenName;
-        if (req) {
-            req.onreadystatechange = function () {
-                if (req.readyState == 4) {
-                    if (req.status == 200) {
-                      if(req.responseText != "Success") {                        
-                        setTimeout(function () {
-                          getFollower(screenName, true);
-                        }, 1200000);
-                      }
-                    }
-                }
-            }
-            req.open("GET", strURL, true);
-            req.send(null);
-        }
-      } else {
-
-      }
-  }
-</script>
  
 
 <script>
